@@ -5,6 +5,7 @@ import numpy as np
 import itertools
 
 threshold = 160 
+ssim = cv2.quality.QualitySSIM_compute
 
 def get_reference():
     ref = cv2.imread(os.path.join(settings.REFERENCE_ROOT, 'ballot_a3.jpg'), cv2.IMREAD_GRAYSCALE)
@@ -91,7 +92,7 @@ def wrap_image(image, max_quad):
     
     print("Here5.66")
 
-    sim = cv2.quality.QualitySSIM_compute(bin_img, bin_ref)
+    sim = ssim(bin_img, bin_ref)
 
     print("Here6")
 
