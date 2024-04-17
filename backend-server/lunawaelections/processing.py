@@ -1,11 +1,11 @@
-# from skimage.metrics import structural_similarity as ssim
+from skimage.metrics import structural_similarity as ssim
 from django.conf import settings
 import json, cv2, os
 import numpy as np
 import itertools
 
 threshold = 160 
-ssim = cv2.quality.QualitySSIM_compute
+# ssim = cv2.quality.QualitySSIM_compute
 
 def get_reference():
     ref = cv2.imread(os.path.join(settings.REFERENCE_ROOT, 'ballot_a3.jpg'), cv2.IMREAD_GRAYSCALE)
