@@ -1,6 +1,5 @@
 from skimage.metrics import structural_similarity as ssim
 from django.conf import settings
-import concurrent.futures
 import json, cv2, os
 import numpy as np
 import itertools
@@ -122,19 +121,19 @@ def draw_bbox(image):
     
     return image, outliers
 
-def img_display(img, name='Image'):
-    cv2.namedWindow(name, cv2.WINDOW_NORMAL)
-    cv2.resizeWindow(name, (534, 756))
-    cv2.imshow(name, img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+# def img_display(img, name='Image'):
+#     cv2.namedWindow(name, cv2.WINDOW_NORMAL)
+#     cv2.resizeWindow(name, (534, 756))
+#     cv2.imshow(name, img)
+#     cv2.waitKey(0)
+#     cv2.destroyAllWindows()
 
 bbox_data, shape, crop_ref, bin_ref, (p, q, r, s) = get_reference()
 
-if __name__ == '__main__':
-    file_name = 'ballot_a3.jpg' # 'ballot_3d9c889f0fc3ec64_20240415_235845.jpg'
-    image = check_valid(file_name)
-    if image is not None:
-        image, members = draw_bbox(image)
-        img_display(image, file_name)
-        print(members)
+# if __name__ == '__main__':
+#     file_name = 'ballot_a3.jpg' # 'ballot_3d9c889f0fc3ec64_20240415_235845.jpg'
+#     image = check_valid(file_name)
+#     if image is not None:
+#         image, members = draw_bbox(image)
+#         img_display(image, file_name)
+#         print(members)
