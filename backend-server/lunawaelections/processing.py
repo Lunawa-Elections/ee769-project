@@ -89,6 +89,7 @@ def get_score(warped_image, fact = 2):
     bin_img = cv2.resize(bin_img, (new_width, new_height))
     ref_small = cv2.resize(bin_ref, (new_width, new_height))
 
+    bin_img = ref_small
     sim = ssim(bin_img, ref_small)
     mse = ((bin_img - ref_small) ** 2).mean()
     psnr = cv2.PSNR(bin_img, ref_small)
