@@ -4,11 +4,10 @@ import json, cv2, os
 import numpy as np
 import itertools
 
-threshold = 160
+threshold = 160 
 
 def get_reference():
     ref = cv2.imread(os.path.join(settings.REFERENCE_ROOT, 'ballot_a3.jpg'), cv2.IMREAD_GRAYSCALE)
-    sim = ssim(ref, ref)
     shape = ref.shape
     
     bbox_data = json.load(open(os.path.join(settings.REFERENCE_ROOT, 'boxes_coor.json')))
@@ -18,7 +17,7 @@ def get_reference():
     crop_ref = ref[p:q, r:s]
     _, bin_ref = cv2.threshold(ref, threshold, 255, cv2.THRESH_BINARY)
 
-    return bbox_data, shape, ref, crop_ref, bin_ref, (p, q, r, s)
+    return bbox_data, shape, crop_ref, bin_ref, (p, q, r, s)
 
 def sort_points(points):
     centroid = np.mean(points, axis=0)
@@ -79,19 +78,12 @@ def wrap_image(image, max_quad):
     ssim_score2 = ssim(crop_wrp2, crop_ref)
     
     warped_image = warped_image1 if ssim_score1 > ssim_score2 else warped_image2
-
     _, bin_img = cv2.threshold(warped_image, threshold, 255, cv2.THRESH_BINARY)
 
-    print("1")
-    # sim = ssim(ref, ref)
-    print("2")
-    sim = ssim(bin_ref, bin_ref)
-    print("3")
-    sim = ssim(warped_image, warped_image)
-    print("4")
-    sim = ssim(bin_img, bin_img)
-    print("5")
+    print(bin_img.shape, bin_img.dtype)
+    print(bin_ref.shape, bin_ref.dtype)
 
+    sim = ssim(bin_img, bin_ref)
     mse = ((bin_img - bin_ref) ** 2).mean()
     psnr = cv2.PSNR(bin_img, bin_ref)
     score = sim/0.35 + psnr/5 - mse/0.3
@@ -139,7 +131,7 @@ def draw_bbox(image):
 #     cv2.waitKey(0)
 #     cv2.destroyAllWindows()
 
-bbox_data, shape, ref, crop_ref, bin_ref, (p, q, r, s) = get_reference()
+bbox_data, shape, crop_ref, bin_ref, (p, q, r, s) = get_reference()
 
 # if __name__ == '__main__':
 #     file_name = 'ballot_a3.jpg' # 'ballot_3d9c889f0fc3ec64_20240415_235845.jpg'
