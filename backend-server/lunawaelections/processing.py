@@ -4,10 +4,11 @@ import json, cv2, os
 import numpy as np
 import itertools
 
-threshold = 160\
+threshold = 160
 
 def get_reference():
     ref = cv2.imread(os.path.join(settings.REFERENCE_ROOT, 'ballot_a3.jpg'), cv2.IMREAD_GRAYSCALE)
+    sim = ssim(ref, ref)
     shape = ref.shape
     
     bbox_data = json.load(open(os.path.join(settings.REFERENCE_ROOT, 'boxes_coor.json')))
