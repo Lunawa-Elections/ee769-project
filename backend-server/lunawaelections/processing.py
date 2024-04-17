@@ -92,7 +92,7 @@ def get_score(warped_image, fact = 2):
     sim = ssim(bin_img, ref_small)
     psnr = cv2.PSNR(bin_img, ref_small)
     score = sim/0.20 + psnr/5
-    validity = True if score>1.5 else False
+    validity = True if score>2 else False
     return warped_image if validity else None
 
 def check_valid(name):
