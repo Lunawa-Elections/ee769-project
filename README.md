@@ -4,6 +4,9 @@
 ## Project Overview
 The Lunawa Elections Project is designed to facilitate paper-based offline elections by enabling real-time counts of votes through a dashboard. Developed for the NGO Lunawa Helping Hand in Mumbai, this project aims to streamline the election process and reduce human errors, making the voting process more efficient and transparent.
 
+Link to: [Video Demo and Code Walkthrough](https://drive.google.com/file/d/19vwvun9RgGZ2gXEIVj4W26towjMMh1Cm)
+
+
 ## Features
 - **Real-time Election Vote Updates:** A dashboard displays the count of votes in real-time.
 - **Automatic Ballot Processing:** The system automatically processes images of ballots to determine votes.
