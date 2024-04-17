@@ -1,6 +1,6 @@
 from skimage.metrics import structural_similarity as ssim
 from django.conf import settings
-import json, cv2, os
+import json, cv2, os, gc
 import numpy as np
 import itertools
 
@@ -80,8 +80,8 @@ def wrap_image(image, max_quad):
     warped_image = warped_image1 if ssim_score1 > ssim_score2 else warped_image2
     _, bin_img = cv2.threshold(warped_image, threshold, 255, cv2.THRESH_BINARY)
 
-    print(bin_img.shape, bin_img.dtype)
-    print(bin_ref.shape, bin_ref.dtype)
+    del warped_image1, warped_image2
+    gc.collect()
 
     sim = ssim(bin_img, bin_ref)
     mse = ((bin_img - bin_ref) ** 2).mean()
