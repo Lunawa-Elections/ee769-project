@@ -85,7 +85,7 @@ def wrap_image(image, max_quad):
     mse = ((bin_img - bin_ref) ** 2).mean()
     psnr = cv2.PSNR(bin_img, bin_ref)
     score = sim/0.35 + psnr/5 - mse/0.3
-    validity = True if score>1.2 else False
+    validity = True if score>0.8 else False
     return warped_image if validity else None
 
 def check_valid(name):

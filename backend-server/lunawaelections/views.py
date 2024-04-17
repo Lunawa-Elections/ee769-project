@@ -42,6 +42,8 @@ def upload(request):
             new_image = models.Image.objects.create(name=image.name, android_id=android_id)
             if new_image.status != "Invalid":
                 response = HttpResponse("Upload Successfully", status=200)
+            else:
+                response = HttpResponse("Invalid Image", status=400)
                 
         except Exception as e:
             logger.error(f"Error occurred during upload: {e}", exc_info=True)
