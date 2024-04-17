@@ -79,7 +79,14 @@ def wrap_image(image, max_quad):
     ssim_score2 = ssim(crop_wrp2, crop_ref)
     
     warped_image = warped_image1 if ssim_score1 > ssim_score2 else warped_image2
-    return warped_image
+
+    _, bin_img = cv2.threshold(warped_image, threshold, 255, cv2.THRESH_BINARY)
+    sim = ssim(bin_img, bin_ref)
+    mse = ((bin_img - bin_ref) ** 2).mean()
+    psnr = cv2.PSNR(bin_img, bin_ref)
+    score = sim/0.35 + psnr/5 - mse/0.3
+    validity = True if score>1.2 else False
+    return warped_image if validity else None
 
 def check_valid(name):
     try:
