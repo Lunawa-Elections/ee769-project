@@ -16,7 +16,7 @@ def get_reference():
     p, q, r, s = min(y1,y2), max(y1,y2), min(x1,x2), max(x1,x2)
     
     crop_ref = ref[p:q, r:s]
-    _, bin_ref = cv2.threshold(ref, threshold, 255, cv2.THRESH_BINARY)
+    _, bin_ref = cv2.threshold(ref, threshold, 255, cv2.THRESH_BINARY_INV)
 
     return bbox_data, shape, crop_ref, bin_ref, (p, q, r, s)
 
@@ -35,9 +35,9 @@ def find_max_quad(contour):
         area = cv2.contourArea(quad_points)
         if area > max_area: 
             max_area, max_quad = area, quad_points
-
-    if max_quad is not None: max_quad = sort_points(max_quad.reshape(4, 2))
-    return max_quad
+            
+    if max_quad is not None and max_area > 3e6: return sort_points(max_quad.reshape(4, 2))
+    return None
 
 def get_contour(image):
     contours, _ = cv2.findContours(image, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -80,7 +80,7 @@ def wrap_image(image, max_quad):
     
     warped_image = warped_image1 if ssim_score1 > ssim_score2 else warped_image2
 
-    _, bin_img = cv2.threshold(warped_image, threshold, 255, cv2.THRESH_BINARY)
+    _, bin_img = cv2.threshold(warped_image, threshold, 255, cv2.THRESH_BINARY_INV)
     sim = ssim(bin_img, bin_ref)
     mse = ((bin_img - bin_ref) ** 2).mean()
     psnr = cv2.PSNR(bin_img, bin_ref)
@@ -89,13 +89,14 @@ def wrap_image(image, max_quad):
     return warped_image if validity else None
 
 def check_valid(name):
+    ret = None
     try:
         image = cv2.imread(name, cv2.IMREAD_GRAYSCALE)
         _, bin_img = cv2.threshold(image, threshold, 255, cv2.THRESH_BINARY)
         max_quad = get_contour(bin_img)
-        image = wrap_image(image, max_quad)
-    except: image = None
-    return image
+        if max_quad is not None: ret = wrap_image(image, max_quad)
+    except: pass
+    return ret
 
 def get_member(image, sub_value):
     if image is not None and sub_value is not None:
