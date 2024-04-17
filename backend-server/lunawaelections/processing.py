@@ -88,13 +88,20 @@ def wrap_image(image, max_quad):
     return warped_image if validity else None
 
 def check_valid(name):
+    print("Here0")
     ret = None
     try:
+        print("Here1")
         image = cv2.imread(name, cv2.IMREAD_GRAYSCALE)
+        print("Here2")
         _, bin_img = cv2.threshold(image, threshold, 255, cv2.THRESH_BINARY)
+        print("Here3")
         max_quad = get_contour(bin_img)
+        print("Here4")
         if max_quad is not None: ret = wrap_image(image, max_quad)
+        print("Here5")
     except: pass
+    print("Here6")
     return ret
 
 def get_member(image, sub_value):
