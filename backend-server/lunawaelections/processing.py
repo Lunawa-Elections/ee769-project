@@ -78,14 +78,22 @@ def wrap_image(image, max_quad):
     ssim_score2 = ssim(crop_wrp2, crop_ref)
     
     warped_image = warped_image1 if ssim_score1 > ssim_score2 else warped_image2
-    _, bin_img = cv2.threshold(warped_image, threshold, 255, cv2.THRESH_BINARY)
+    return get_score(warped_image)
 
-    del warped_image1, warped_image2
-    gc.collect()
+def get_score(warped_image, fact = 2):
+    bin_img = cv2.threshold(warped_image, threshold, 255, cv2.THRESH_BINARY)[1]
+    
+    new_width = bin_img.shape[1] // fact
+    new_height = bin_img.shape[0] // fact
 
-    sim = ssim(bin_img, bin_ref)
-    mse = ((bin_img - bin_ref) ** 2).mean()
-    psnr = cv2.PSNR(bin_img, bin_ref)
+    bin_img = cv2.resize(bin_img, (new_width, new_height))
+    ref_small = cv2.resize(bin_ref, (new_width, new_height))
+
+    print("1")
+    sim = ssim(bin_img, ref_small)
+    print("2")
+    mse = ((bin_img - ref_small) ** 2).mean()
+    psnr = cv2.PSNR(bin_img, ref_small)
     score = sim/0.35 + psnr/5 - mse/0.3
     validity = True if score>0.8 else False
     return warped_image if validity else None
