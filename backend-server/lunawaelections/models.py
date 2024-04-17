@@ -36,7 +36,7 @@ class Image(models.Model):
             file_path = os.path.join(settings.UPLOAD_ROOT, self.name)
             image = processing.check_valid(file_path)
 
-            if image:
+            if image is not None:
                 self.status = "Processed"
                 threading.Thread(target=self.post_process, args=(image,)).start()
                 
