@@ -1,0 +1,7 @@
+django
+pandas
+scikit-image
+opencv-python-headless
+streamlit
+streamlit-autorefresh
+plotly
