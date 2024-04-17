@@ -4,7 +4,7 @@ import json, cv2, os
 import numpy as np
 import itertools
 
-threshold = 160 
+threshold = 160\
 
 def get_reference():
     ref = cv2.imread(os.path.join(settings.REFERENCE_ROOT, 'ballot_a3.jpg'), cv2.IMREAD_GRAYSCALE)
@@ -84,7 +84,7 @@ def wrap_image(image, max_quad):
     print("1")
     sim = ssim(ref, ref)
     print("2")
-    sim = ssim(bin_ref, bin_ref)
+    # sim = ssim(bin_ref, bin_ref)
     print("3")
     sim = ssim(warped_image, warped_image)
     print("4")
