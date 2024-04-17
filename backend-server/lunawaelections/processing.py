@@ -82,9 +82,9 @@ def wrap_image(image, max_quad):
     _, bin_img = cv2.threshold(warped_image, threshold, 255, cv2.THRESH_BINARY)
 
     print("1")
-    sim = ssim(ref, ref)
+    # sim = ssim(ref, ref)
     print("2")
-    # sim = ssim(bin_ref, bin_ref)
+    sim = ssim(bin_ref, bin_ref)
     print("3")
     sim = ssim(warped_image, warped_image)
     print("4")
