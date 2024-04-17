@@ -4,8 +4,37 @@ import json, cv2, os
 import numpy as np
 import itertools
 
+def ssim(x, y, K1=0.01, K2=0.03, L=255, window_size=7):
+    """
+    Calculate the Structural Similarity Index (SSIM) between two images.
+    """
+    C1 = (K1 * L) ** 2
+    C2 = (K2 * L) ** 2
+    
+    # Define a gaussian window for convolution
+    window = np.outer(np.hanning(window_size), np.hanning(window_size))
+    window /= np.sum(window)
+    
+    # Mean of x and y
+    mu_x = np.convolve(x.ravel(), window.ravel(), mode='valid')[0]
+    mu_y = np.convolve(y.ravel(), window.ravel(), mode='valid')[0]
+    
+    # Variance of x and y
+    sigma_x = np.convolve(x.ravel()**2, window.ravel(), mode='valid')[0] - mu_x**2
+    sigma_y = np.convolve(y.ravel()**2, window.ravel(), mode='valid')[0] - mu_y**2
+    
+    # Covariance between x and y
+    sigma_xy = np.convolve(x.ravel()*y.ravel(), window.ravel(), mode='valid')[0] - mu_x*mu_y
+    
+    # Calculate SSIM
+    numerator = (2 * mu_x * mu_y + C1) * (2 * sigma_xy + C2)
+    denominator = (mu_x**2 + mu_y**2 + C1) * (sigma_x + sigma_y + C2)
+    ssim = numerator / denominator
+    
+    return ssim
+
 threshold = 160 
-ssim = cv2.quality.QualitySSIM_compute
+# ssim = cv2.quality.QualitySSIM_compute
 
 def get_reference():
     ref = cv2.imread(os.path.join(settings.REFERENCE_ROOT, 'ballot_a3.jpg'), cv2.IMREAD_GRAYSCALE)
