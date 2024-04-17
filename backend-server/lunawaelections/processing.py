@@ -48,17 +48,20 @@ def get_contour(image):
     return max_quad
 
 def wrap_image(image, max_quad):
+    print("Here0")
     x, y, w, h = cv2.boundingRect(max_quad)
     tmp, incorrect = shape, False
     if w>h:
         tmp = (shape[1], shape[0])
         incorrect = True
     
+    print("Here1")
     target_points = np.array([[0, 0], [tmp[1], 0], [tmp[1], tmp[0]], [0, tmp[0]]], dtype=np.float32)
     perspective_matrix = cv2.getPerspectiveTransform(max_quad, target_points)
     warped_image = cv2.warpPerspective(image, perspective_matrix, (tmp[1], tmp[0]))
 
     if incorrect:
+        print("Here2")
         warped_image1 = cv2.rotate(warped_image, cv2.ROTATE_90_COUNTERCLOCKWISE)
         crop_wrp1 = warped_image1[p:q, r:s]
         ssim_score1 = ssim(crop_wrp1, crop_ref)
@@ -69,39 +72,52 @@ def wrap_image(image, max_quad):
         
         warped_image = warped_image1 if ssim_score1 > ssim_score2 else warped_image2
 
+    print("Here3")
     warped_image1 = warped_image
     crop_wrp1 = warped_image1[p:q, r:s]
     ssim_score1 = ssim(crop_wrp1, crop_ref)
 
+    print("Here4")
     warped_image2 = cv2.rotate(cv2.rotate(warped_image, cv2.ROTATE_90_CLOCKWISE), cv2.ROTATE_90_CLOCKWISE)
     crop_wrp2 = warped_image2[p:q, r:s]
     ssim_score2 = ssim(crop_wrp2, crop_ref)
     
+    print("Here5")
     warped_image = warped_image1 if ssim_score1 > ssim_score2 else warped_image2
 
     _, bin_img = cv2.threshold(warped_image, threshold, 255, cv2.THRESH_BINARY)
     sim = ssim(bin_img, bin_ref)
+    print("Here6")
+
     mse = ((bin_img - bin_ref) ** 2).mean()
     psnr = cv2.PSNR(bin_img, bin_ref)
+
+    print("Here7")
+
     score = sim/0.35 + psnr/5 - mse/0.3
+
+    print("Here8")
+
     validity = True if score>0.8 else False
+
+    print("Here9")
     return warped_image if validity else None
 
 def check_valid(name):
-    print("Here0")
+    # print("Here0")
     ret = None
     try:
-        print("Here1")
+        # print("Here1")
         image = cv2.imread(name, cv2.IMREAD_GRAYSCALE)
-        print("Here2")
+        # print("Here2")
         _, bin_img = cv2.threshold(image, threshold, 255, cv2.THRESH_BINARY)
-        print("Here3")
+        # print("Here3")
         max_quad = get_contour(bin_img)
         print("Here4")
         if max_quad is not None: ret = wrap_image(image, max_quad)
         print("Here5")
     except: pass
-    print("Here6")
+    # print("Here6")
     return ret
 
 def get_member(image, sub_value):
