@@ -85,8 +85,14 @@ def wrap_image(image, max_quad):
     print("Here5")
     warped_image = warped_image1 if ssim_score1 > ssim_score2 else warped_image2
 
+    print("Here5.33")
+
     _, bin_img = cv2.threshold(warped_image, threshold, 255, cv2.THRESH_BINARY)
+    
+    print("Here5.66")
+
     sim = ssim(bin_img, bin_ref)
+    
     print("Here6")
 
     mse = ((bin_img - bin_ref) ** 2).mean()
