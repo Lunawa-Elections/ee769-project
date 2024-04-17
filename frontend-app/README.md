@@ -38,10 +38,6 @@ Each class and layout file contributes to the overall functionality of the appli
 ## Conclusion
 This documentation serves as a guide for understanding the roles and responsibilities of various components in the Android application. It ensures that developers and new contributors can quickly comprehend and integrate with the existing codebase.
 
-## Usage
-
-Interact with the API using standard HTTP methods through tools like curl, Postman, or your browser to test and use the provided endpoints.
-
 ## Contributing
 
 Contributions are welcome. Please fork the repository, make your changes, and submit a pull request.
