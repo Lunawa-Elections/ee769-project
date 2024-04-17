@@ -42,6 +42,9 @@ python manage.py runserver 0.0.0.0:80
 2. **Dashboard:**
    - Visit [Lunawa Elections Dashboard](http://lunawaelections.southindia.cloudapp.azure.com/) to view the real-time updates of vote counts.
 
+3. **Note:**
+   - In order to use a local server, you need to change the `serverUrl` in `strings.xml` on Android and rebuild the application with the new URL. Currently, the server is hosted on Azure at the URL: [http://lunawaelections.southindia.cloudapp.azure.com/](http://lunawaelections.southindia.cloudapp.azure.com/).
+
 ## Contributing
 This project is developed as a part of the course project for EE 769 Introduction to Machine Learning at IIT Bombay. Contributions, bug reports, and feature requests are welcome. Please feel free to fork the repository and submit pull requests.
 
