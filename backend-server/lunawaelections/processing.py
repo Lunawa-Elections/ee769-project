@@ -16,7 +16,7 @@ def get_reference():
     p, q, r, s = min(y1,y2), max(y1,y2), min(x1,x2), max(x1,x2)
     
     crop_ref = ref[p:q, r:s]
-    _, bin_ref = cv2.threshold(ref, threshold, 255, cv2.THRESH_BINARY_INV)
+    _, bin_ref = cv2.threshold(ref, threshold, 255, cv2.THRESH_BINARY)
 
     return bbox_data, shape, crop_ref, bin_ref, (p, q, r, s)
 
@@ -36,7 +36,7 @@ def find_max_quad(contour):
         if area > max_area: 
             max_area, max_quad = area, quad_points
             
-    if max_quad is not None and max_area > 3e6: return sort_points(max_quad.reshape(4, 2))
+    if max_quad is not None and max_area > 2e6: return sort_points(max_quad.reshape(4, 2))
     return None
 
 def get_contour(image):
@@ -80,7 +80,7 @@ def wrap_image(image, max_quad):
     
     warped_image = warped_image1 if ssim_score1 > ssim_score2 else warped_image2
 
-    _, bin_img = cv2.threshold(warped_image, threshold, 255, cv2.THRESH_BINARY_INV)
+    _, bin_img = cv2.threshold(warped_image, threshold, 255, cv2.THRESH_BINARY)
     sim = ssim(bin_img, bin_ref)
     mse = ((bin_img - bin_ref) ** 2).mean()
     psnr = cv2.PSNR(bin_img, bin_ref)
