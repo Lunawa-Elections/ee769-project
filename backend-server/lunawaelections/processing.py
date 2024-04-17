@@ -1,4 +1,4 @@
-from skimage.metrics import structural_similarity as ssim
+# from skimage.metrics import structural_similarity as ssim
 from django.conf import settings
 import json, cv2, os
 import numpy as np
@@ -91,8 +91,8 @@ def wrap_image(image, max_quad):
     
     print("Here5.66")
 
-    sim = ssim(bin_img, bin_ref)
-    
+    sim = cv2.quality.QualitySSIM_compute(bin_img, bin_ref)
+
     print("Here6")
 
     mse = ((bin_img - bin_ref) ** 2).mean()
